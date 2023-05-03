@@ -2,11 +2,11 @@ use std::fmt;
 
 #[derive(Debug, Clone)]
 pub struct Board {
-    pub size: usize,
-    pub blank_index: usize,
+    size: usize,
+    blank_index: usize,
     pub children: Vec<Board>,
-    pub depth: usize,
-    pub puzzle: String,
+    depth: usize,
+    puzzle: String,
 }
 
 impl Board {
@@ -86,6 +86,9 @@ impl Board {
             self.children.push(branch);
         }
     }
+
+
+
 }
  impl fmt::Display for Board {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -101,6 +104,21 @@ impl Board {
         return write!(f,"{}", result);
     }
  }
+
+pub fn create_board(size: usize,
+                    depth: usize,
+                    puzzle: String
+                   ) -> Board {
+    
+    let blank_index: Option<usize> = puzzle.find(" ");
+    let board: Board;
+    match blank_index {
+        Some(i) => board = Board { size, blank_index: i , children: Vec::new(), depth, puzzle },
+        None => panic!("board does not have an empty block")
+    };
+    
+    board
+}
 
 fn create_branch(board: &Board, blank_index: usize) -> Board { 
     let mut puzzle: String = board.puzzle.clone();
